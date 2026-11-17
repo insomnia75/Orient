@@ -1,0 +1,13 @@
+{
+  "name": "orient-showcase",
+  "version": "2.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Unofficial concept: immersive Orient watch site (3D showcase, collection, model pages, heritage, craft).",
+  "scripts": {
+    "dev": "npx serve . -l 5173",
+    "dev:py": "python3 -m http.server 5173",
+    "build:css": "tailwindcss -c src/tailwind.config.js -i src/styles/tailwind.css -o dist/tailwind.css --minify",
+    "test:mesh": "node tests/mesh-check.mjs"
+  }
+}

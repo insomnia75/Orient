@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Orient: six beats every second (concept)</title>
+  <meta name="description" content="An unofficial concept site for Orient mechanical watches: an interactive 3D stage, the collection, the history of the company and how a mechanical watch works.">
+  <meta name="theme-color" content="#111214">
+  <meta name="color-scheme" content="dark">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Orient: six beats every second (concept)">
+  <meta property="og:description" content="An unofficial concept site for Orient mechanical watches: a 3D stage, the collection, the company's history and how a mechanical watch works.">
+  <meta property="og:url" content="https://insomnia75.github.io/Orient/">
+  <meta property="og:image" content="https://insomnia75.github.io/Orient/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="An Orient Bambino drawn in code beside the line Six beats every second.">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23a63a2f'/%3E%3Ctext x='16' y='24' font-size='22' text-anchor='middle' fill='%23ebe6da' font-family='serif'%3E%E6%99%82%3C/text%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap" rel="stylesheet">
+
+  <script>
+    // Hidden/initial animation states only apply when JS runs; if the app fails, show the page anyway.
+    document.documentElement.classList.replace('no-js', 'js');
+    setTimeout(function () { document.documentElement.classList.add('is-ready'); }, 6000);
+  </script>
+
+  <!-- Libraries. Pinned versions, loaded as native ES modules (no bundler needed). -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/",
+      "gsap": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js",
+      "gsap/ScrollTrigger": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/ScrollTrigger.js",
+      "lenis": "https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.mjs"
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="./src/styles/main.css">
+  <link rel="stylesheet" href="./src/styles/pages.css">
+  <script type="module" src="./src/main.js"></script>
+</head>
+
+<body>
+  <a class="skip" href="#main" data-skip>Skip to the content</a>
+
+  <header class="nav" id="nav">
+    <a class="nav__brand" href="#home" aria-label="Orient concept, home">
+      <span class="seal font-display" lang="ja" aria-hidden="true">時</span>
+      <span class="nav__word font-display">Orient</span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#collection" data-nav="collection">Collection</a>
+      <a href="#heritage" data-nav="heritage">Heritage</a>
+      <a href="#craft" data-nav="craft">Craft</a>
+      <a href="#about" data-nav="about">About</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ───────────── Home: hero + interactive showcase ───────────── -->
+    <div class="view" data-view="home">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <canvas class="hero__canvas" id="hero-canvas" aria-hidden="true"></canvas>
+        <div class="hero__shade" aria-hidden="true"></div>
+
+        <div class="hero__vertical" aria-hidden="true">
+          <span class="seal seal--lg font-display" lang="ja">時</span>
+          <p class="hero__vtext font-display" lang="ja">機械式時計</p>
+        </div>
+
+        <div class="hero__copy">
+          <h1 class="hero__title font-display" id="hero-title">Six beats every second.</h1>
+          <p class="hero__jp font-display" lang="ja">一秒に六度、時を刻む。</p>
+          <p class="hero__lede">
+            Orient’s automatic calibres tick 21,600 times an hour. Wear one and it winds itself, powered by the motion of your wrist.
+          </p>
+          <a class="cta" href="#showcase" data-magnetic="0.25" data-cursor="Go">
+            <span class="cta__label" data-magnetic-inner>Explore the collection</span>
+            <span class="cta__line" aria-hidden="true"></span>
+          </a>
+          <p class="hero__note">An unofficial concept for a portfolio. Not affiliated with Orient. <a href="#about">About this project</a></p>
+        </div>
+      </section>
+
+      <section class="showcase" id="showcase" aria-labelledby="showcase-title">
+        <div class="showcase__stage" id="stage" data-cursor="Drag">
+          <canvas class="stage__canvas" id="watch-canvas" aria-label="Interactive 3D watch. Drag to rotate, scroll to zoom." role="img"></canvas>
+          <canvas class="stage__fallback" id="watch-fallback" hidden aria-label="Watch dial"></canvas>
+          <div class="hotspots" id="hotspots"></div>
+          <p class="stage__hint" id="stage-hint">Drag to turn the watch. Select a point to look closer.</p>
+        </div>
+
+        <div class="showcase__info" id="info">
+          <p class="info__series" id="info-series">Classic</p>
+          <h2 class="info__name font-display" id="showcase-title">Bambino</h2>
+          <p class="info__tagline" id="info-tagline"></p>
+
+          <div class="info__variants" role="group" aria-label="Colourway" id="info-variants"></div>
+          <p class="info__variant-name" id="info-variant-name" aria-live="polite"></p>
+
+          <dl class="info__stats" id="info-stats"></dl>
+
+          <div class="info__actions">
+            <button type="button" class="btn" id="btn-explode" aria-pressed="false" data-magnetic="0.2">
+              <span data-magnetic-inner>Exploded view</span>
+            </button>
+            <button type="button" class="btn btn--ghost" id="btn-specs" data-open-drawer data-magnetic="0.2">
+              <span data-magnetic-inner>Specifications</span>
+            </button>
+            <a class="btn btn--ghost" id="btn-page" href="#watch-bambino">
+              <span>Model page</span>
+            </a>
+          </div>
+        </div>
+
+        <aside class="part-card" id="part-card" hidden aria-live="polite">
+          <button type="button" class="part-card__close" id="part-close" aria-label="Close details">
+            <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+          </button>
+          <p class="part-card__jp font-display" id="part-jp" lang="ja"></p>
+          <h3 class="part-card__title font-display" id="part-title"></h3>
+          <p class="part-card__body" id="part-body"></p>
+        </aside>
+
+        <div class="showcase__rail" id="rail">
+          <div class="rail__filters" role="group" aria-label="Filter by series" id="rail-filters"></div>
+          <ul class="rail__list" id="rail-list"></ul>
+        </div>
+      </section>
+
+      <section class="teasers" aria-label="More from the site">
+        <a class="teaser" href="#heritage" data-cursor="Open">
+          <span class="teaser__jp font-display" lang="ja" aria-hidden="true">歴史</span>
+          <span class="teaser__title font-display">A shop in Ueno, 1901</span>
+          <span class="teaser__text">From imported pocket watches to Japan’s own mechanical calibres, in twelve dates.</span>
+        </a>
+        <a class="teaser" href="#craft" data-cursor="Open">
+          <span class="teaser__jp font-display" lang="ja" aria-hidden="true">機構</span>
+          <span class="teaser__title font-display">How it ticks</span>
+          <span class="teaser__text">A balance wheel, a winding rotor and ten words every watch lover should know in Japanese.</span>
+        </a>
+      </section>
+    </div>
+
+    <!-- ───────────── Collection ───────────── -->
+    <div class="view page" data-view="collection" hidden>
+      <header class="page-head">
+        <p class="page-head__jp font-display" lang="ja" aria-hidden="true">時計</p>
+        <h1 class="page-head__title font-display">The collection</h1>
+        <p class="page-head__lede">Five models: two dress watches, two divers and a day-and-night complication. Open one for its story, its parts and its specifications.</p>
+      </header>
+      <section class="coll" aria-label="Models">
+        <div class="tabs" id="coll-tabs" role="group" aria-label="Filter by series"></div>
+        <ul class="coll__grid" id="coll-grid"></ul>
+      </section>
+      <section class="compare" aria-labelledby="compare-title">
+        <h2 class="wd-h font-display" id="compare-title">Side by side</h2>
+        <div class="compare__scroll" tabindex="0" role="region" aria-label="Comparison table, scrolls sideways on small screens">
+          <table class="compare__table" id="coll-table"></table>
+        </div>
+      </section>
+    </div>
+
+    <!-- ───────────── Model page (filled from data) ───────────── -->
+    <div class="view page page--watch" data-view="watch" hidden>
+      <article id="watch-root"></article>
+    </div>
+
+    <!-- ───────────── Heritage ───────────── -->
+    <div class="view page page--heritage" data-view="heritage" hidden>
+      <header class="page-head">
+        <p class="page-head__jp font-display" lang="ja" aria-hidden="true">歴史</p>
+        <h1 class="page-head__title font-display">A shop in Ueno, 1901</h1>
+        <p class="page-head__lede">Orient dates its founding to 1950, but its story starts half a century earlier, behind the counter of a watch shop in Tokyo. Dates are given in the Western year and in the Japanese era.</p>
+      </header>
+      <section class="heritage__body" aria-label="Timeline">
+        <div class="heritage__gear" id="gear-host" aria-hidden="true"></div>
+        <ol class="timeline" id="timeline"></ol>
+      </section>
+      <section class="heritage__sources" aria-labelledby="src-title">
+        <h2 class="wd-h font-display" id="src-title">Sources</h2>
+        <ul id="sources"></ul>
+      </section>
+    </div>
+
+    <!-- ───────────── Craft ───────────── -->
+    <div class="view page page--craft" data-view="craft" hidden>
+      <header class="page-head">
+        <p class="page-head__jp font-display" lang="ja" aria-hidden="true">機構</p>
+        <h1 class="page-head__title font-display">How it ticks</h1>
+        <p class="page-head__lede">There is no battery inside an Orient automatic. A spring stores the energy, a gear train spends it, and a tiny wheel decides how fast time goes by.</p>
+      </header>
+
+      <section class="craft-block">
+        <div class="craft-block__text">
+          <h2 class="wd-h font-display">Six beats a second</h2>
+          <p>The balance wheel swings back and forth on a hairspring. Every swing lets the escape wheel advance one small step, and the hands move on. Orient’s calibres make 21,600 of these half-swings an hour, which is six a second, or three full oscillations.</p>
+          <p>The drawing is slowed to a tenth. At real speed it is a blur.</p>
+          <button type="button" class="btn btn--ghost" id="btn-speed" aria-pressed="false"><span>Show real speed</span></button>
+        </div>
+        <div class="craft-block__fig" id="fig-balance" data-speed="slow"></div>
+      </section>
+
+      <section class="craft-block craft-block--flip">
+        <div class="craft-block__text">
+          <h2 class="wd-h font-display">It winds itself</h2>
+          <p>A half-disc weight, the rotor, swings with every movement of your wrist and winds the mainspring through a gear. After roughly 40 hours without wearing it, the spring runs down and the watch stops.</p>
+          <p>Orient’s F6 calibres can also be wound by hand with the crown, and they hack: pulling the crown stops the seconds hand so you can set the time to the second.</p>
+        </div>
+        <div class="craft-block__fig" id="fig-rotor"></div>
+      </section>
+
+      <section class="craft-block craft-block--note">
+        <div class="craft-block__text">
+          <h2 class="wd-h font-display">Made in Japan, in house</h2>
+          <p>Orient says it develops and makes its own mechanical movements in Japan. They are built by Akita Epson, a company in the Epson group, in Yuzawa, in the north of Honshu.</p>
+        </div>
+      </section>
+
+      <section class="gloss" aria-labelledby="gloss-title">
+        <h2 class="wd-h font-display" id="gloss-title">Ten words, in Japanese</h2>
+        <ul class="gloss__grid" id="glossary"></ul>
+      </section>
+    </div>
+
+    <!-- ───────────── About this project ───────────── -->
+    <div class="view page page--about" data-view="about" hidden>
+      <header class="page-head">
+        <p class="page-head__jp font-display" lang="ja" aria-hidden="true">制作</p>
+        <h1 class="page-head__title font-display">About this project</h1>
+        <p class="page-head__lede">A concept site for Orient mechanical watches, made as a portfolio piece. It is not affiliated with Orient, and nothing on it is for sale.</p>
+      </header>
+
+      <div class="about">
+        <section class="about__row" aria-labelledby="ab-brief">
+          <h2 class="wd-h font-display" id="ab-brief">The brief</h2>
+          <div class="about__text">
+            <p>Build a watch site that feels like a calm, precise object instead of a template: one model you can turn and take apart, a collection, a history, and a page that explains how the mechanism works.</p>
+            <p>Orient was a good subject. The range runs from a slim dress watch to a diver to a moon-phase, the company has a documented history in Japan, and the Japanese vocabulary of watchmaking gave the design a point of view.</p>
+          </div>
+        </section>
+
+        <section class="about__row" aria-labelledby="ab-inside">
+          <h2 class="wd-h font-display" id="ab-inside">What is in it</h2>
+          <ul class="about__list">
+            <li><a href="#home">Home</a> has a slow watch movement in the hero and the 3D stage: five models in fourteen colourways, hotspots on each part, an exploded view and a specifications drawer.</li>
+            <li><a href="#collection">Collection</a> filters by series and compares the models in one table. Each watch is drawn at its real size relative to the others.</li>
+            <li><a href="#watch-kamasu">Model pages</a> give each watch its own address, with a live face that keeps the time, a story, an anatomy in Japanese and English, and specifications.</li>
+            <li><a href="#heritage">Heritage</a> is twelve dated entries from 1901 to 2025. A train of wheels turns as you scroll.</li>
+            <li><a href="#craft">Craft</a> shows a balance wheel and a rotor at work, with a glossary of ten Japanese terms.</li>
+          </ul>
+        </section>
+
+        <section class="about__row" aria-labelledby="ab-stack">
+          <h2 class="wd-h font-display" id="ab-stack">Stack</h2>
+          <div class="about__text">
+            <p>HTML, hand-written CSS with design tokens, and JavaScript modules loaded straight by the browser, with no bundler. three.js draws the 3D, GSAP and ScrollTrigger drive the timeline and reveals, and Lenis handles smooth scrolling. Fonts are Shippori Mincho and Zen Kaku Gothic New.</p>
+            <p>A Tailwind config and build script are included for anyone who wants utility classes. The pages shipped here use plain CSS, because the Tailwind browser build added weight the site did not need.</p>
+          </div>
+        </section>
+
+        <section class="about__row" aria-labelledby="ab-decisions">
+          <h2 class="wd-h font-display" id="ab-decisions">Decisions worth a look</h2>
+          <dl class="about__dl">
+            <dt>One document, hash routes</dt>
+            <dd>Five views share a page and switch on the URL hash. It runs on any static host. The 3D code downloads only when the home view opens, so a link to the collection never pays for it.</dd>
+            <dt>One gear, drawn once</dt>
+            <dd>A single outline function makes every wheel, in the 3D hero and in the SVG on the Heritage page. Meshing wheels are phased from their tooth counts, and a test samples the train at several moments to confirm no teeth overlap.</dd>
+            <dt>Slow on purpose</dt>
+            <dd>The barrel turns slowly and the faster wheels follow from the tooth counts, so no tooth jumps more than a fraction of its pitch between frames. The balance wheel is shown in slow motion, because at its real six beats a second it would only blur.</dd>
+            <dt>Every watch is drawn from data</dt>
+            <dd>There are no image files. The 3D model and the 2D drawing on cards and model pages are both built from the same measurements in millimetres: case diameter, lug width, lug to lug, bezel type, strap. A new entry gets its strap, lugs, crown, bezel and dial without any artwork.</dd>
+            <dt>It degrades instead of breaking</dt>
+            <dd>Without WebGL the stage draws the 2D watch with live hands. If the 3D libraries fail to load, every other page still works. When frames run long, the renderer lowers its pixel ratio.</dd>
+            <dt>Content is data</dt>
+            <dd>Models live in one file and the history in another. Add an entry and the rail, filters, pages, table and drawer follow.</dd>
+          </dl>
+        </section>
+
+        <section class="about__row" aria-labelledby="ab-data">
+          <h2 class="wd-h font-display" id="ab-data">Adding a model</h2>
+          <div class="about__text">
+            <p>Everything a model needs sits in one entry in <code>src/data/watches.js</code>. Set <code>image</code> to a photograph and the collection card and model page use it in place of the drawn watch.</p>
+            <pre class="about__code"><code>{
+  id: 'kamasu',
+  name: 'Kamasu',
+  series: 'sport',
+  jp: 'カマス',
+  image: '/photos/kamasu.jpg',      // optional, replaces the drawn watch
+  gallery: [{ src: '/photos/kamasu-side.jpg', alt: 'Side view' }],
+  case: { diameter: 41.8, thickness: 12.8, metal: '#c3c8ce' },
+  variants: [{ id: 'green', name: 'Green', dial: '#1f5a46' }],
+  specs: [{ label: 'Movement', value: 'Calibre F6922' }],
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="about__row" aria-labelledby="ab-limits">
+          <h2 class="wd-h font-display" id="ab-limits">What is placeholder</h2>
+          <ul class="about__list">
+            <li>The watches are drawn in code. There is no product photography, so dials, hands and straps are illustrations of the real models, not official artwork.</li>
+            <li>Specifications come from public listings and should be checked against the current Orient range before anyone relies on them.</li>
+            <li>History comes from the public sources listed at the foot of the Heritage page.</li>
+            <li>The newsletter form checks the address and sends nothing.</li>
+            <li>Orient and the model names belong to their owners. This is an unofficial study.</li>
+          </ul>
+        </section>
+
+        <section class="about__row" aria-labelledby="ab-credits">
+          <h2 class="wd-h font-display" id="ab-credits">Credits</h2>
+          <div class="about__text">
+            <p>Design and development by <a href="https://github.com/insomnia75" target="_blank" rel="noopener">insomnia75</a>. Watch data from Orient’s public listings, history from the sources on the <a href="#heritage">Heritage</a> page.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <div class="foot__grid">
+      <div class="foot__brand">
+        <span class="seal seal--lg font-display" lang="ja" aria-hidden="true">時</span>
+        <p class="font-display foot__word">Orient</p>
+        <p class="foot__small">An unofficial concept project for a web development portfolio. Not affiliated with or endorsed by Orient Watch Co. or Seiko Epson.</p>
+      </div>
+      <nav class="foot__nav" aria-label="Footer">
+        <a href="#collection">Collection</a>
+        <a href="#heritage">Heritage</a>
+        <a href="#craft">Craft</a>
+        <a href="#about">About this project</a>
+        <a href="https://orient-watch.com" target="_blank" rel="noopener">Official Orient site</a>
+      </nav>
+      <form class="news" id="news" novalidate>
+        <label class="news__label font-display" for="news-email">Letters from the workshop</label>
+        <p class="news__hint" id="news-hint">A concept form: nothing is sent or stored.</p>
+        <div class="news__row">
+          <input id="news-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" aria-describedby="news-hint news-msg" required>
+          <button type="submit" class="btn" data-magnetic="0.2"><span data-magnetic-inner>Subscribe</span></button>
+        </div>
+        <p class="news__msg" id="news-msg" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+    <p class="foot__legal">Specifications come from public listings; check them against the current Orient range before publishing.</p>
+  </footer>
+
+  <div class="veil" aria-hidden="true"></div>
+
+  <!-- ───────────── Specifications drawer ───────────── -->
+  <div class="drawer" id="drawer" hidden>
+    <button type="button" class="drawer__backdrop" tabindex="-1" aria-label="Close specifications" data-close-drawer></button>
+    <aside class="drawer__panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+      <button type="button" class="drawer__close" data-close-drawer aria-label="Close specifications">
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      </button>
+      <h2 class="drawer__title font-display" id="drawer-title"></h2>
+      <p class="drawer__ref" id="drawer-ref"></p>
+      <p class="drawer__blurb" id="drawer-blurb"></p>
+      <dl class="drawer__specs" id="drawer-specs"></dl>
+      <div class="drawer__colours" id="drawer-colours"></div>
+      <div class="drawer__gallery" id="drawer-gallery"></div>
+    </aside>
+  </div>
+</body>
+</html>
